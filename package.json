@@ -2,13 +2,13 @@
   "name": "bot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "bot.js",
   "bin": {
     "bot": "./bot.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "3box-bot": "./index.js"
+    "start": "./bot.js"
   },
   "repository": {
     "type": "git",
