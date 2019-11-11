@@ -1,0 +1,31 @@
+{
+  "name": "bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "bot": "./bot.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "3box-bot": "./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghiliweld/3box-ghost-chatbot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ghiliweld/3box-ghost-chatbot/issues"
+  },
+  "homepage": "https://github.com/ghiliweld/3box-ghost-chatbot#readme",
+  "dependencies": {
+    "3box": "^1.13.1",
+    "@colony/purser-software": "^1.2.7",
+    "crypto": "^1.0.1",
+    "ethers": "^4.0.39",
+    "identity-wallet": "^0.3.0",
+    "minimist": "^1.2.0"
+  }
+}
