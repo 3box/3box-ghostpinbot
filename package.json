@@ -1,14 +1,14 @@
 {
-  "name": "bot",
+  "name": "3box-pinbot",
   "version": "1.0.0",
-  "description": "",
-  "main": "bot.js",
+  "description": "CLI for spinning up your own Ghost Thread pinbot",
+  "main": "pinbot.js",
   "bin": {
-    "bot": "./bot.js"
+    "pinbot": "./pinbot.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "./bot.js"
+    "start": "./pinbot.js"
   },
   "repository": {
     "type": "git",
@@ -22,10 +22,7 @@
   "homepage": "https://github.com/ghiliweld/3box-ghost-chatbot#readme",
   "dependencies": {
     "3box": "^1.13.1",
-    "@colony/purser-software": "^1.2.7",
     "crypto": "^1.0.1",
-    "ethers": "^4.0.39",
-    "identity-wallet": "^0.3.0",
-    "minimist": "^1.2.0"
+    "identity-wallet": "^0.3.0"
   }
 }
