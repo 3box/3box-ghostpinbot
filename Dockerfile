@@ -6,7 +6,7 @@ COPY package.json package-lock.json ./
 
 RUN npm install
 
-COPY pinbot.js
+COPY pinbot.js ./
 
 EXPOSE  4002 4003
 
