@@ -10,4 +10,4 @@ COPY pinbot.js ./
 
 EXPOSE  4002 4003
 
-ENTRYPOINT ["pinbot"]
+ENTRYPOINT ["node", "pinbot.js"]
