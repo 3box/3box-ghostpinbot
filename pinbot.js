@@ -4,8 +4,6 @@ const name = process.argv.pop();
 const spaceName = name.split('.')[2];
 const roomName = name.split('.')[3];
 
-console.log('3BOX:', process.env.NAME);
-
 const Box = require('3box')
 const IdentityWallet = require('identity-wallet')
 const crypto = require('crypto');
