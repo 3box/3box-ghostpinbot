@@ -21,8 +21,8 @@
   },
   "homepage": "https://github.com/ghiliweld/3box-ghost-chatbot#readme",
   "dependencies": {
-    "3box": "^1.13.1",
+    "3box": "^1.19.0",
     "crypto": "^1.0.1",
-    "identity-wallet": "^0.3.0"
+    "identity-wallet": "^1.2.0"
   }
 }
