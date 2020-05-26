@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint ./src --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "./pinbot.js"
+    "start": "node ./app.js"
   },
   "repository": {
     "type": "git",
