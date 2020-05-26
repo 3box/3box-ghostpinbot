@@ -1,13 +1,17 @@
 FROM node:10
 
-MAINTAINER Ghilia Weldesselasie <ghili@3box.io>
+MAINTAINER Janko Simonovic <janko@3box.io>
+
+# Create app directory
+WORKDIR /usr/src/app
 
 COPY package.json package-lock.json ./
 
 RUN npm install
 
-COPY pinbot.js ./
+# Bundle app source
+COPY . .
 
-EXPOSE  4002 4003
+EXPOSE 8081 4001 4002 5001 9001
 
-ENTRYPOINT ["node", "pinbot.js"]
+CMD [ "node", "app.js" ]
