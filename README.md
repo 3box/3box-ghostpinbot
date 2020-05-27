@@ -2,7 +2,7 @@
 
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
-This package contains an information for spinning up your Ghost Pinbot server used for attaching/detaching to Ghost threads.
+This package contains information for spinning up your Ghost Pinbot server used for attaching/detaching to Ghost threads.
 
 ## Tabel of Contents
 - [Start](#start)
