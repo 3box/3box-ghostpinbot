@@ -6,8 +6,8 @@ This package contains information for spinning up your Ghost Pinbot server used 
 
 ## Tabel of Contents
 - [Start](#start)
-- [Swarm connect](#Swarm connect)
-- [RESTful APIs](#RESTful APIs)
+- [Swarm](#swarm)
+- [APIs](#APIs)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -29,7 +29,7 @@ input that needs to be provided is the certificate arn from AWS.
 If you want to setup secure WebSocket for `swarm` without using AWS and the scripts provided, feel free to set it up using `nginx` or 
 other software to create a reverse proxy.
 
-## Swarm connect
+## Swarm
 
 Upon successful start and deployment, the MultiAddress of a Ghost Pinbot node can be passed as an option `ghostPinbot` to `3Box` on create.
 
@@ -49,7 +49,7 @@ const box = await Box.create(provider, {
 })
 ```
 
-## RESTful APIs
+## APIs
 
 RESTful APIs are enabled on `http://localhost:8081/api/ghost/` by default.
 
