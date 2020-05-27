@@ -4,7 +4,8 @@ const IdentityWallet = require('identity-wallet');
 
 const logger = require('./logger');
 
-const THREAD_KEEP_ALIVE_PERIOD = process.env.THREAD_KEEP_ALIVE_PERIOD || 3600000; // 1 hour
+const ENABLE_THREAD_CLEANUP = process.env.ENABLE_THREAD_CLEANUP || false;
+const THREAD_CLEANUP_PERIOD = process.env.THREAD_CLEANUP_PERIOD || 3600000; // 1 hour
 
 /**
  * IPFS peer
@@ -47,7 +48,9 @@ class Peer {
 
     logger.info(`Peer ${this.box._ipfs._peerInfo.id._idB58String} successfully synced`);
 
-    this._startThreadKeepAliveMonitor();
+    if (ENABLE_THREAD_CLEANUP) {
+      this._startThreadKeepAliveMonitor();
+    }
   }
 
   /**
@@ -61,14 +64,17 @@ class Peer {
       try {
         // eslint-disable-next-line no-restricted-syntax
         for (const [key, value] of Object.entries(self.rooms)) {
-          if (Date.now() > value.lastUpdatedTime + THREAD_KEEP_ALIVE_PERIOD) {
+          const { lastUpdatedTime, members } = value;
+          const deadline = lastUpdatedTime + THREAD_CLEANUP_PERIOD;
+
+          if (Date.now() > deadline && members === 0) {
             self.leave(Peer._getSpaceFromRoomName(key), Peer._getThreadFromRoomName(key));
           }
         }
       } catch (e) {
         // do nothing
       }
-    }, 10000);
+    }, 60000);
   }
 
   /**
@@ -100,15 +106,29 @@ class Peer {
         ghost: true,
       });
 
+      const self = this;
       thread.onUpdate(async (msg) => {
         logger.debug(JSON.stringify(msg));
+        if (msg.type === 'backlog') {
+          // increase the number of members
+          self.rooms[room].lastUpdatedTime = Date.now();
+          self.rooms[room].members = this.rooms[room].members + 1;
+        }
       });
 
-      thread.onNewCapabilities((event, did, peerId) => logger.info(`Peer ${peerId} has ${event} the chat`));
+      thread.onNewCapabilities((event, did, peerId) => {
+        if (event === 'left') {
+          // decrease the number of members
+          self.rooms[room].lastUpdatedTime = Date.now();
+          self.rooms[room].members = this.rooms[room].members - 1;
+        }
+        logger.info(`Peer ${peerId} has ${event} the chat`);
+      });
 
       this.rooms[room] = {
         thread,
         lastUpdatedTime: Date.now(),
+        members: 0,
       };
 
       logger.info(`Peer ${this.box._ipfs._peerInfo.id._idB58String} joined chat ${threadName}`);
