@@ -1,0 +1,17 @@
+version: '3'
+services:
+  pinbot:
+    build:
+      context: . # Use an image built from the specified dockerfile in the current directory
+      dockerfile: Dockerfile
+    environment:
+      - LOG_LEVEL=info
+      - SERVER_PORT=8081
+      - ENABLE_THREAD_CLEANUP=false
+    volumes:
+      - ./data/ipfs:/ipfs
+      - ./data/orbitdb:/orbitdb
+    ports:
+      - "4001:4001"
+      - "4002:4002"
+      - "8081:8081"
