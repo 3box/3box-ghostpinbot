@@ -41,6 +41,14 @@ The options example:
 }
 ```
 
+Using it with the 3Box:
+
+```javascript
+const box = await Box.create(provider, {
+  ghostPinbot: "/dns4/_domain.com/tcp/443/wss/ipfs/QmUrpWDrQd4CyYyiRit8A7ydeqm7SmDQKA9HANTpsrunmP"
+})
+```
+
 ## RESTful APIs
 
 RESTful APIs are enabled on `http://localhost:8081/api/ghost/` by default.
