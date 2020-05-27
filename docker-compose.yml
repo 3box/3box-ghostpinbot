@@ -12,6 +12,5 @@ services:
       - ./data/ipfs:/ipfs
       - ./data/orbitdb:/orbitdb
     ports:
-      - "4001:4001"
       - "4002:4002"
       - "8081:8081"
