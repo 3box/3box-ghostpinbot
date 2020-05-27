@@ -26,7 +26,7 @@ class Peer {
 
     const provider = wallet.get3idProvider();
 
-    this.box = await Box.openBox(null, provider, {
+    this.box = await Box.create(provider, {
       ipfsOptions: {
         config: {
           Bootstrap: [],
@@ -96,13 +96,7 @@ class Peer {
         return;
       }
 
-      const space = await this.box.openSpace(spaceName, {
-        consentCallback: () => true,
-      });
-
-      await space.syncDone;
-
-      const thread = await space.joinThread(threadName, {
+      const thread = await this.box.openThread(spaceName, threadName, {
         ghost: true,
       });
 
