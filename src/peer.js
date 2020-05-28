@@ -40,14 +40,22 @@ class Peer {
 			},
 		})
 
-		const id = await this.box._ipfs.id()
-		logger.info(JSON.stringify(id, null, 2))
-
 		await this.box.syncDone
 
-		logger.info(`Peer ${this.box._ipfs._peerInfo.id._idB58String} successfully synced`)
+		logger.info(`Peer ${this.getPeerInfo().id} successfully synced`)
 
 		this._startThreadKeepAliveMonitor()
+	}
+
+	/**
+	 * Get IPFS peer information
+	 */
+	getPeerInfo() {
+		return {
+			id: this.box._ipfs._peerInfo.id._idB58String,
+			multiaddrs: this.box._ipfs._peerInfo.multiaddrs,
+			protocols: this.box._ipfs._peerInfo.protocols,
+		}
 	}
 
 	/**
@@ -79,11 +87,25 @@ class Peer {
 	}
 
 	/**
+	 * List attached rooms
+	 */
+	listRooms() {
+		const result = []
+		for (let [key] of Object.entries(this.rooms)) {
+			result.push({
+				space: this._getSpaceFromRoomName(key),
+				thread: this._getThreadFromRoomName(key),
+			})
+		}
+		return result
+	}
+
+	/**
 	 * Joins peer to a specific thread and space
 	 */
 	async join(spaceName, threadName) {
 		try {
-			const room = `${spaceName}.${threadName}`
+			const room = this._createRoomName(spaceName, threadName)
 
 			if (this.rooms[room] != null) {
 				this.rooms[room].lastUpdatedTime = Date.now() // it's already attached, just update time
@@ -122,12 +144,12 @@ class Peer {
 	 */
 	async leave(spaceName, threadName) {
 		try {
-			const room = `${spaceName}.${threadName}`
+			const roomName = this._createRoomName(spaceName, threadName)
 
-			const thread = this.rooms[room]
-			if (thread != null) {
-				await thread.close()
-				delete this.rooms[room]
+			const room = this.rooms[roomName]
+			if (room != null) {
+				await room.thread.close()
+				delete this.rooms[roomName]
 				logger.info(`Peer ${this.box._ipfs._peerInfo.id._idB58String} left chat ${threadName}`)
 			}
 		} catch (e) {

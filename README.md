@@ -44,14 +44,14 @@ The options example:
 Using it with the 3Box:
 
 ```javascript
-const box = await Box.create(provider, {
+Box.create(provider, {
   ghostPinbot: "/dns4/_domain.com/tcp/443/wss/ipfs/QmUrpWDrQd4CyYyiRit8A7ydeqm7SmDQKA9HANTpsrunmP"
 })
 ```
 
 ## APIs
 
-RESTful APIs are enabled on `http://localhost:8081/api/ghost/` by default.
+RESTful APIs are enabled on `http://localhost:8081/api/v0/` by default.
 
 ----
   #### Start listening to a thread
@@ -60,7 +60,7 @@ RESTful APIs are enabled on `http://localhost:8081/api/ghost/` by default.
 
 * **URL**
 
-  `/attach`
+  `/rooms`
 
 * **Method:**
 
@@ -71,8 +71,8 @@ RESTful APIs are enabled on `http://localhost:8081/api/ghost/` by default.
   * **Content:** 
     ```json
       {
-      	"space": "space-name",
-      	"thread": "thread-name" 
+      	"space": "hello-world-space",
+        "thread": "hello-world-thread"
       }
     ```
 
@@ -87,25 +87,89 @@ RESTful APIs are enabled on `http://localhost:8081/api/ghost/` by default.
 
 * **URL**
 
-  `/detach`
+  `/rooms`
 
 * **Method:**
 
-  `POST`
+  `DELETE`
   
 * **Data Params**<br />
 
   * **Content:** 
     ```json
       {
-      	"space": "space-name",
-      	"thread": "thread-name" 
+        "space": "hello-world-space",
+        "thread": "hello-world-thread"
       }
     ```
 
 * **Success Response:**
 
   * **Code:** 200 <br />
+
+----
+  #### Get list of attached rooms
+    
+  Gets list of attached rooms.
+
+* **URL**
+
+  `/rooms`
+
+* **Method:**
+
+  `GET`
+  
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** 
+     ```json
+     [
+         {
+             "space": "hello-world-space",
+             "thread": "hello-world-thread"
+         }
+     ]
+     ```
+
+----
+  #### Get IPFS peer information
+    
+  Gets IPFS peer information.
+
+* **URL**
+
+  `/info`
+
+* **Method:**
+
+  `GET`
+  
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** 
+     ```json
+     {
+         "id": "QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu",
+         "multiaddrs": {
+             "_multiaddrs": [
+                 "/ip4/127.0.0.1/tcp/4001/ipfs/QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu",
+                 "/ip4/192.168.1.4/tcp/4001/ipfs/QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu",
+                 "/ip4/127.0.0.1/tcp/4002/ws/ipfs/QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu",
+                 "/ip4/192.168.1.4/tcp/4002/ws/ipfs/QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu",
+                 "/p2p-circuit/ipfs/QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu",
+                 "/p2p-circuit/ip4/127.0.0.1/tcp/4001/ipfs/QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu",
+                 "/p2p-circuit/ip4/192.168.1.4/tcp/4001/ipfs/QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu",
+                 "/p2p-circuit/ip4/127.0.0.1/tcp/4002/ws/ipfs/QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu",
+                 "/p2p-circuit/ip4/192.168.1.4/tcp/4002/ws/ipfs/QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu"
+             ],
+             "_observedMultiaddrs": []
+         },
+         "protocols": {}
+     }
+     ```
 
 ## Maintainers
 [@simonovic86](https://github.com/simonovic86)

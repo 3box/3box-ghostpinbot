@@ -26,18 +26,36 @@ class Server {
 		this.app.use(bodyParser.urlencoded({extended: false}))
 		this.app.use(bodyParser.json())
 
-		this.app.post('/v0/ghost/attach', this.attach.bind(this))
-		this.app.post('/v0/ghost/detach', this.detach.bind(this))
-		this.app.get('/v0/ghost/healthcheck', this.healthcheckHandler.bind(this))
+		this.app.get('/api/v0/rooms', this.listRooms.bind(this))
+		this.app.post('/api/v0/rooms', this.attach.bind(this))
+		this.app.delete('/api/v0/rooms', this.detach.bind(this))
+
+		this.app.get('/api/v0/peer/healthcheck', this.healthcheck.bind(this))
+		this.app.get('/api/v0/peer/info', this.info.bind(this))
 
 		this.app.listen(this.port, () => logger.info(`Server started on port ${this.port}`))
 	}
 
 	/**
+	 * Peer info route
+	 */
+	info(req, res) {
+		return res.status(200).send(this.peer.getPeerInfo())
+	}
+
+	/**
 	 * Healthcheck route
 	 */
-	async healthcheckHandler(req, res, next) {
-		return res.status(200).send()
+	healthcheck(req, res) {
+		return res.status(200).send() // always return HTTP OK
+	}
+
+	/**
+	 * List attached rooms
+	 */
+	listRooms(req, res) {
+		const rooms = this.peer.listRooms()
+		return res.status(200).send(rooms)
 	}
 
 	/**
@@ -54,9 +72,9 @@ class Server {
 	 * Detach from space/thread
 	 */
 	async detach(req, res) {
-		const {thread} = req.body
+		const {space, thread} = req.body
 
-		await this.peer.leave(thread)
+		await this.peer.leave(space, thread)
 		return res.status(200).send()
 	}
 
