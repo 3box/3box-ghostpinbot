@@ -41,16 +41,24 @@ class Peer {
       },
     });
 
-    const id = await this.box._ipfs.id();
-    logger.info(JSON.stringify(id, null, 2));
-
     await this.box.syncDone;
 
-    logger.info(`Peer ${this.box._ipfs._peerInfo.id._idB58String} successfully synced`);
+    logger.info(`Peer ${this.getPeerInfo().id} successfully synced`);
 
     if (ENABLE_THREAD_CLEANUP) {
       this._startThreadKeepAliveMonitor();
     }
+  }
+
+  /**
+    * Get IPFS peer information
+    */
+  getPeerInfo() {
+    return {
+      id: this.box._ipfs._peerInfo.id._idB58String,
+      multiaddrs: this.box._ipfs._peerInfo.multiaddrs,
+      protocols: this.box._ipfs._peerInfo.protocols,
+    };
   }
 
   /**
@@ -85,6 +93,21 @@ class Peer {
   async _stopThreadKeepAliveMonitor() {
     clearInterval(this.keepAliveMonitorHandle);
     this.keepAliveMonitorHandle = 0;
+  }
+
+  /**
+    * List attached rooms
+    */
+  listRooms() {
+    const result = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const [key] of Object.entries(this.rooms)) {
+      result.push({
+        space: this._getSpaceFromRoomName(key),
+        thread: this._getThreadFromRoomName(key),
+      });
+    }
+    return result;
   }
 
   /**
@@ -138,19 +161,16 @@ class Peer {
   }
 
   /**
-   * Leave thread
-   * @param spaceName - Space name
-   * @param threadName - Thread name
-   * @return {Promise<void>}
-   */
+  * Leave thread
+  */
   async leave(spaceName, threadName) {
     try {
-      const room = Peer._createRoomName(spaceName, threadName);
+      const roomName = Peer._createRoomName(spaceName, threadName);
 
-      const thread = this.rooms[room];
-      if (thread != null) {
-        await thread.close();
-        delete this.rooms[room];
+      const room = this.rooms[roomName];
+      if (room != null) {
+        await room.thread.close();
+        delete this.rooms[roomName];
         logger.info(`Peer ${this.box._ipfs._peerInfo.id._idB58String} left chat ${threadName}`);
       }
     } catch (e) {
