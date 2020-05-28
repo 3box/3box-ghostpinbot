@@ -7,8 +7,9 @@
     "pinbot": "./pinbot.js"
   },
   "scripts": {
+    "lint": "eslint ./src --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "./pinbot.js"
+    "start": "node ./app.js"
   },
   "repository": {
     "type": "git",
@@ -28,5 +29,10 @@
     "express": "^4.17.1",
     "identity-wallet": "^1.2.0",
     "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2"
   }
 }
