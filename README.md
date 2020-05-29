@@ -71,7 +71,7 @@ RESTful APIs are enabled on `http://localhost:8081/api/v0/` by default.
   * **Content:** 
     ```json
       {
-      	"space": "hello-world-space",
+        "space": "hello-world-space",
         "thread": "hello-world-thread"
       }
     ```
