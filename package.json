@@ -26,7 +26,7 @@
     "body-parser": "^1.18.3",
     "bunyan": "^1.8.12",
     "crypto": "^1.0.1",
-    "express": "^4.17.1",
+    "express": "^3.21.2",
     "identity-wallet": "^1.2.0",
     "winston": "^3.2.1"
   },
