@@ -5,6 +5,7 @@ services:
       context: . # Use an image built from the specified dockerfile in the current directory
       dockerfile: Dockerfile
     environment:
+      - EXECUTION_MODE=BUNDLED
       - LOG_LEVEL=info
       - SERVER_PORT=8081
       - ENABLE_THREAD_CLEANUP=false
