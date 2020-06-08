@@ -2,3 +2,4 @@
 .idea
 ipfs
 orbitdb
+deploy/heroku/build
