@@ -24,7 +24,7 @@ three different modes:
 
 There is a `Dockerfile` which can be used to build the image and deploy it on your infrastructure.
 
-`Note`: the same `Dockerfile` is used for all the execution modes. This needs to be separated in some of the future versions of the Ghost Pinbot.
+**Note**: the same `Dockerfile` is used for all the execution modes. This needs to be separated in some of the future versions of the Ghost Pinbot.
 
 #### Local
 
@@ -59,7 +59,7 @@ The multiaddress will be listed in the response:
 
 - `Multiaddress example`: /dns4/ghostpinbot-peer.herokuapp.com/wss/ipfs/Qma9vbkfBMxWPEMzYybECAXenxwYiwXztbtSsQDDYcpPna
 
-`Note`: Make sure that the names of the applications are available on Heroku.
+**Note**: Make sure that the names of the applications are available on Heroku.
 
 #### AWS
 
