@@ -18,7 +18,7 @@ resource "aws_alb_target_group" "pinbot_peer_ws_tg" {
 
   health_check {
     interval = 30
-    path = "/v0/ghost/healthcheck"
+    path = "/api/v0/peer"
     port = 8081
     protocol = "HTTP"
     matcher = "200"
@@ -36,7 +36,7 @@ resource "aws_alb_target_group" "pinbot_api_tg" {
 
   health_check {
     interval = 30
-    path = "/v0/ghost/healthcheck"
+    path = "/api/v0/peer"
     port = 8081
     protocol = "HTTP"
     matcher = "200"

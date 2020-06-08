@@ -34,6 +34,9 @@ resource "aws_ecs_task_definition" "pinbot_td" {
         "hostPort": 8081
       }
     ],
+    "environment": [
+      { "name": "EXECUTION_MODE", "value": "BUNDLED" }
+    ],
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
