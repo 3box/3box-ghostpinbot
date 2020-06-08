@@ -44,7 +44,7 @@ That script will create the script for deployment:
 
 Just run the script and your services will be deployed on Heroku. For example, if you run:
 
-- `./deploy/heroku/build.sh ghostpinbot-api ghostpinbot-api`
+- `./deploy/heroku/build.sh ghostpinbot-api ghostpinbot-peer`
 
 When you run the `deploy.sh` script your services will be deployed as:
 
