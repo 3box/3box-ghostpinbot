@@ -49,7 +49,7 @@ class Peer {
 
     await this.box.syncDone;
 
-    const peerInfo = this.box._ipfs._peerInfo;
+    const { peerInfo } = this.box._ipfs.libp2p;
 
     const baseWsUrl = process.env.BASE_WS_URL;
 
@@ -83,16 +83,21 @@ class Peer {
    * @private
    */
   async _startThreadKeepAliveMonitor() {
+    logger.info('Started thread keep alive monitor');
+
     const self = this;
     this.keepAliveMonitorHandle = setInterval(() => {
       try {
         // eslint-disable-next-line no-restricted-syntax
-        for (const [key, value] of Object.entries(self.state.rooms)) {
-          const { lastUpdatedTime, members } = value;
+        for (const [roomName, room] of Object.entries(self.state.rooms)) {
+          const { lastUpdatedTime, members } = room;
+          logger.info(`Checking room ${roomName}. Members: ${members}`);
+
           const deadline = lastUpdatedTime + THREAD_CLEANUP_PERIOD;
 
           if (Date.now() > deadline && members === 0) {
-            self.leave(utils.getSpaceFromRoomName(key), utils.getThreadFromRoomName(key));
+            logger.info(`Ghost Pinbot is leaving the room ${roomName}. Members: ${members}`);
+            self.leave(utils.getSpaceFromRoomName(roomName), utils.getThreadFromRoomName(roomName));
           }
         }
       } catch (e) {

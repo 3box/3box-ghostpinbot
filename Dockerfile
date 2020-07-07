@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:12
 
 MAINTAINER Janko Simonovic <janko@3box.io>
 
