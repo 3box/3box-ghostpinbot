@@ -44,13 +44,8 @@ class App {
    * @return {Promise<void>}
    */
   async startApi() {
-    try {
-      const api = new Api();
-      await api.start();
-    } catch (e) {
-      console.error(e);
-      process.exit(1);
-    }
+    const api = new Api();
+    await api.start();
   }
 
   /**
@@ -58,16 +53,11 @@ class App {
    * @return {Promise<void>}
    */
   async startPeer() {
-    try {
-      const apiRemoteProxy = new ApiRemoteProxy();
-      const peer = new Peer(apiRemoteProxy);
-      const peerListener = new PeerListener(peer, apiRemoteProxy);
-      await peer.start();
-      peerListener.start();
-    } catch (e) {
-      console.error(e);
-      process.exit(1);
-    }
+    const apiRemoteProxy = new ApiRemoteProxy();
+    const peer = new Peer(apiRemoteProxy);
+    const peerListener = new PeerListener(peer, apiRemoteProxy);
+    await peer.start();
+    peerListener.start();
   }
 
   /**
@@ -75,21 +65,16 @@ class App {
    * @return {Promise<void>}
    */
   async startBundled() {
-    try {
-      const apiHandler = new ApiHandler();
-      const api = new Api(apiHandler);
-      const apiLocalProxy = new ApiLocalProxy(apiHandler);
+    const apiHandler = new ApiHandler();
+    const api = new Api(apiHandler);
+    const apiLocalProxy = new ApiLocalProxy(apiHandler);
 
-      const peer = new Peer(apiLocalProxy);
-      const peerListener = new PeerListener(peer, apiLocalProxy);
+    const peer = new Peer(apiLocalProxy);
+    const peerListener = new PeerListener(peer, apiLocalProxy);
 
-      await api.start();
-      await peer.start();
-      peerListener.start();
-    } catch (e) {
-      console.error(e);
-      process.exit(1);
-    }
+    await api.start();
+    await peer.start();
+    peerListener.start();
   }
 }
 

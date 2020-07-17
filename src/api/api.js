@@ -18,23 +18,32 @@ class Api {
    * Starts the server
    * @return {Promise<void>}
    */
-  async start() {
-    this.app = express();
-    this.app.use(bodyParser.urlencoded({ extended: false }));
-    this.app.use(bodyParser.json());
+  start() {
+    return new Promise((resolve, reject) => {
+      this.app = express();
+      this.app.use(bodyParser.urlencoded({ extended: false }));
+      this.app.use(bodyParser.json());
 
-    // rooms
-    this.app.get('/api/v0/rooms', this.listRooms.bind(this));
-    this.app.post('/api/v0/rooms', this.attach.bind(this));
-    this.app.delete('/api/v0/rooms', this.detach.bind(this));
+      // rooms
+      this.app.get('/api/v0/rooms', this.listRooms.bind(this));
+      this.app.post('/api/v0/rooms', this.attach.bind(this));
+      this.app.delete('/api/v0/rooms', this.detach.bind(this));
 
-    // peers
-    this.app.get('/api/v0/peer', this.info.bind(this));
+      // peers
+      this.app.get('/api/v0/peer', this.info.bind(this));
 
-    // callbacks
-    this.app.post('/api/v0/callback', this.callback.bind(this));
+      // callbacks
+      this.app.post('/api/v0/callback', this.callback.bind(this));
 
-    this.app.listen(this.port, () => logger.info(`Server started on port ${this.port}`));
+      this.app.listen(this.port, (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          logger.info(`Server started on port ${this.port}`);
+          resolve();
+        }
+      });
+    });
   }
 
   /**
@@ -69,7 +78,7 @@ class Api {
       return res.status(200)
         .send(result);
     } catch (e) {
-      return res.status(200)
+      return res.status(400)
         .send({
           status: 400,
           message: e.message,
@@ -90,7 +99,7 @@ class Api {
       return res.status(200)
         .send(result);
     } catch (e) {
-      return res.status(200)
+      return res.status(400)
         .send({
           status: 400,
           message: e.message,
