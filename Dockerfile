@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:12
 
 MAINTAINER Janko Simonovic <janko@3box.io>
 
@@ -11,7 +11,5 @@ RUN npm install
 
 # Bundle app source
 COPY . .
-
-EXPOSE 8081 4001 4002 5001 9001
 
 CMD [ "node", "app.js" ]

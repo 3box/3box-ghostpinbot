@@ -17,5 +17,8 @@ module.exports = {
   rules: {
     "no-underscore-dangle": 'off',
     "no-await-in-loop": 'off',
+    "no-case-declarations": 'off',
+    "no-console": 'off',
+    "class-methods-use-this": 'off',
   },
 };

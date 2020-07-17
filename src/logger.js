@@ -7,6 +7,17 @@ const {
 
 const customFormat = printf((info) => `[${info.timestamp}] ${info.level}: ${info.message}`);
 
+const errorStackFormat = format((info) => {
+  if (info instanceof Error) {
+    return {
+      ...info,
+      stack: info.stack,
+      message: info.message,
+    };
+  }
+  return info;
+});
+
 const LOG_LEVEL = process.env.LOG_LEVEL || 'debug';
 
 /**
@@ -28,6 +39,7 @@ class Logger {
       format: combine(
         timestamp({ format: 'YYYY-MM-DD HH:mm:ss.ms' }),
         customFormat,
+        errorStackFormat(),
       ),
       transports: [
         new winston.transports.Console({

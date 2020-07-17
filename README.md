@@ -13,21 +13,59 @@ This package contains information for spinning up your Ghost Pinbot server used 
 
 ## Start
 
-There are various ways of how to start Ghost Pinbot server. There is a `Dockerfile` which can be used to build the image and deploy it on your infrastructure.
+There are various ways of how to start the app depending on how you want to run the Ghost Pinbot application. The application supports 
+three different modes:
 
-The `docker-compose.yml` can be a good start to bootstrap Ghost Pinbot server:
+- `API`: service for communicating with the Ghost Pinbot API
+    
+- `PEER`: service for handling Ghost Thread functionalities 
 
-```
-$ docker-compose up
-```
+- `BUNDLED`: service which bundles both the API and PEER services.
+
+There is a `Dockerfile` which can be used to build the image and deploy it on your infrastructure.
+
+**Note**: the same `Dockerfile` is used for all the execution modes. This needs to be separated in some of the future versions of the Ghost Pinbot.
+
+#### Local
+
+The `docker-compose.yml` can be a good start to bootstrap Ghost Pinbot server.
+
+- `./docker-compose up`
+
+#### Heroku
+
+In order to run the Ghost Pinbot service on Heroku run the following script from the root dir.
+
+- `./deploy/heroku/build.sh <API_APP_NAME> <PEER_APP_NAME>`
+
+That script will create the script for deployment:
+
+- `./deploy/heroku/build/deploy.sh`
+
+Just run the script and your services will be deployed on Heroku. For example, if you run:
+
+- `./deploy/heroku/build.sh ghostpinbot-api ghostpinbot-peer`
+
+When you run the `deploy.sh` script your services will be deployed as:
+
+- `API`: https://ghostpinbot-api.herokuapp.com
+- `PEER`: https://ghostpinbot-peer.herokuapp.com
+
+The PEER service registers on the API service upon bootstrap. You can query the API service in order to get multiaddress of the peer node:
+
+- `GET PEER INFO`: https://ghostpinbot-api.herokuapp.com/api/v0/peer
+
+The multiaddress will be listed in the response:
+
+- `Multiaddress example`: /dns4/ghostpinbot-peer.herokuapp.com/wss/ipfs/Qma9vbkfBMxWPEMzYybECAXenxwYiwXztbtSsQDDYcpPna
+
+**Note**: Make sure that the names of the applications are available on Heroku.
+
+#### AWS
 
 If you plan to deploy the Ghost Pinbot server on AWS there are Terraform scripts located in `deploy/aws-terraform-example`. 
 
-In order to setup secure WebSocket for `swarm` direct connect over `https` that's automatically implemented in the Terraform scripts provided. The only
-input that needs to be provided is the certificate arn from AWS.
-
-If you want to setup secure WebSocket for `swarm` without using AWS and the scripts provided, feel free to set it up using `nginx` or 
-other software to create a reverse proxy.
+In order to setup secure WebSocket for `swarm` direct connect over `https` that's automatically implemented in the Terraform scripts provided. The only input that needs to be provided is the certificate arn from AWS.
 
 ## Swarm
 
@@ -37,7 +75,7 @@ The options example:
 
 ```json
 {
- "ghostPinbot": "/dns4/_domain.com/tcp/443/wss/ipfs/QmUrpWDrQd4CyYyiRit8A7ydeqm7SmDQKA9HANTpsrunmP"
+ "ghostPinbot": "/dns4/ghostpinbot-peer.herokuapp.com/wss/ipfs/Qma9vbkfBMxWPEMzYybECAXenxwYiwXztbtSsQDDYcpPna"
 }
 ```
 
@@ -45,7 +83,7 @@ Using it with the 3Box:
 
 ```javascript
 Box.create(provider, {
-  ghostPinbot: "/dns4/_domain.com/tcp/443/wss/ipfs/QmUrpWDrQd4CyYyiRit8A7ydeqm7SmDQKA9HANTpsrunmP"
+  ghostPinbot: "/dns4/ghostpinbot-peer.herokuapp.com/wss/ipfs/Qma9vbkfBMxWPEMzYybECAXenxwYiwXztbtSsQDDYcpPna"
 })
 ```
 
@@ -78,7 +116,14 @@ RESTful APIs are enabled on `http://localhost:8081/api/v0/` by default.
 
 * **Success Response:**
 
-  * **Code:** 200 <br />
+    * **Code:** 200 <br />
+  
+   * **Content:** 
+        ```json
+      {
+            "status": "THREAD_JOINING"
+       }
+        ```
 
 ----
   #### Stop listening to a thread
@@ -106,6 +151,13 @@ RESTful APIs are enabled on `http://localhost:8081/api/v0/` by default.
 * **Success Response:**
 
   * **Code:** 200 <br />
+  
+   * **Content:** 
+        ```json
+       {
+            "status": "THREAD_LEAVING"
+       }
+        ```
 
 ----
   #### Get list of attached rooms
@@ -128,7 +180,13 @@ RESTful APIs are enabled on `http://localhost:8081/api/v0/` by default.
      [
          {
              "space": "hello-world-space",
-             "thread": "hello-world-thread"
+             "thread": "hello-world-thread",
+             "status": "THREAD_JOINED"
+         },
+         {
+             "space": "bye-world-space",
+             "thread": "bye-world-thread",
+             "status": "THREAD_LEFT"
          }
      ]
      ```
@@ -140,7 +198,7 @@ RESTful APIs are enabled on `http://localhost:8081/api/v0/` by default.
 
 * **URL**
 
-  `/info`
+  `/peer`
 
 * **Method:**
 
@@ -152,23 +210,11 @@ RESTful APIs are enabled on `http://localhost:8081/api/v0/` by default.
     **Content:** 
      ```json
      {
-         "id": "QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu",
-         "multiaddrs": {
-             "_multiaddrs": [
-                 "/ip4/127.0.0.1/tcp/4001/ipfs/QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu",
-                 "/ip4/192.168.1.4/tcp/4001/ipfs/QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu",
-                 "/ip4/127.0.0.1/tcp/4002/ws/ipfs/QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu",
-                 "/ip4/192.168.1.4/tcp/4002/ws/ipfs/QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu",
-                 "/p2p-circuit/ipfs/QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu",
-                 "/p2p-circuit/ip4/127.0.0.1/tcp/4001/ipfs/QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu",
-                 "/p2p-circuit/ip4/192.168.1.4/tcp/4001/ipfs/QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu",
-                 "/p2p-circuit/ip4/127.0.0.1/tcp/4002/ws/ipfs/QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu",
-                 "/p2p-circuit/ip4/192.168.1.4/tcp/4002/ws/ipfs/QmYJ1UDiztFSkMVfuny8uWrkhVArZUNAdtocxRqWqfWZUu"
-             ],
-             "_observedMultiaddrs": []
-         },
-         "protocols": {}
-     }
+        "id": "Qma9vbkfBMxWPEMzYybECAXenxwYiwXztbtSsQDDYcpPna",
+        "multiaddrs": [
+            "/dns4/ghostpinbot-peer.herokuapp.com/wss/ipfs/Qma9vbkfBMxWPEMzYybECAXenxwYiwXztbtSsQDDYcpPna"
+        ]
+    }
      ```
 
 ## Maintainers
