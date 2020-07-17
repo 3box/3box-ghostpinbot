@@ -26,6 +26,25 @@ class ApiHandler {
   }
 
   /**
+   * Updates thread status
+   * @param spaceName - Space name
+   * @param threadName - Thread name
+   * @param status - Thread status
+   * @return {*}
+   * @private
+   */
+  _updateThreadStatus(spaceName, threadName, status) {
+    const room = utils.createRoomName(spaceName, threadName);
+
+    if (this.rooms[room]) {
+      this.rooms[room] = { status };
+      return this.rooms[room];
+    }
+
+    throw new Error(`Non existing room for space ${spaceName} and thread ${threadName}`);
+  }
+
+  /**
    * Peers peerStarted
    * @param peerInfo - Peer information (id, multiaddress)
    */
@@ -59,16 +78,7 @@ class ApiHandler {
    * @param threadName - Thread name
    */
   threadJoined(spaceName, threadName) {
-    const room = utils.createRoomName(spaceName, threadName);
-
-    if (this.rooms[room]) {
-      this.rooms[room] = {
-        status: 'THREAD_JOINED',
-      };
-      return this.rooms[room];
-    }
-
-    throw new Error(`Non existing room for space ${spaceName} and thread ${threadName}`);
+    return this._updateThreadStatus(spaceName, threadName, 'THREAD_JOINED')
   }
 
   /**
@@ -95,16 +105,7 @@ class ApiHandler {
    * @param threadName
    */
   threadLeft(spaceName, threadName) {
-    const room = utils.createRoomName(spaceName, threadName);
-
-    if (this.rooms[room]) {
-      this.rooms[room] = {
-        status: 'THREAD_LEFT',
-      };
-      return this.rooms[room];
-    }
-
-    throw new Error(`Non existing room for space ${spaceName} and thread ${threadName}`);
+    return this._updateThreadStatus(spaceName, threadName, 'THREAD_LEFT');
   }
 }
 

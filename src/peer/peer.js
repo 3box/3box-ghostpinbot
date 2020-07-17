@@ -128,7 +128,7 @@ class Peer {
 
       const room = this.state.rooms[roomName];
       if (room != null) {
-        this.state.rooms.lastUpdatedTime = Date.now(); // it's already attached, just update time
+        room.lastUpdatedTime = Date.now(); // it's already attached, just update time
         return;
       }
 
