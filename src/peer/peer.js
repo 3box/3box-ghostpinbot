@@ -55,9 +55,7 @@ class Peer {
 
     const addresses = peerInfo.multiaddrs._multiaddrs.map((a) => a.toString());
     if (baseWsUrl) {
-      const addrWs = addresses.find((a) => a.includes(`${port}`));
-      // TODO think about better way of determining multiaddress
-      const multiaddrs = `/dns4/${baseWsUrl}/wss/${addrWs.substring(addrWs.lastIndexOf('ipfs'))}`;
+      const multiaddrs = `/dns4/${baseWsUrl}/wss/p2p/${peerInfo.id._idB58String}`;
       this.state.info = {
         id: peerInfo.id._idB58String,
         multiaddrs: [multiaddrs],
