@@ -24,7 +24,7 @@
   "dependencies": {
     "3box": "^1.22.2",
     "body-parser": "^1.18.3",
-    "bunyan": "^1.8.14",
+    "bunyan": "^1.8.15",
     "crypto": "^1.0.1",
     "express": "^4.17.1",
     "identity-wallet": "^1.4.1",
