@@ -1,4 +1,6 @@
 # 3box-ghostpinbot
+> ⚠️ This package is slowly being phased out in favor of a new more decentralized system called IDX (https://idx.xyz) which is built on top of the Ceramic network. You can use it for now, but be aware that support will be limited as Ceramic is moving closer to a mainnet release.
+
 
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
