@@ -31,7 +31,7 @@
     "node-fetch": "^2.6.1",
     "winston": "^3.3.3",
     "minimist": "^1.2.5",
-    "commander": "^6.2.0"
+    "commander": "^8.0.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
