@@ -1,5 +1,6 @@
-# ⚠️ ⚠️ This project is no longer supported ⚠️ ⚠️ 
+# ⚠️ ⚠️ Deprecated in favor of Ceramic ⚠️ ⚠️ 
 > 3box.js and related tools built by 3Box Labs are deprecated and no loger supported. Developers are encurraged to build with https://ceramic.network which is a more secure and decentralized protocol for sovereign data.
+
 
 # 3box-ghostpinbot
 > ⚠️ This package is slowly being phased out in favor of a new more decentralized system called IDX (https://idx.xyz) which is built on top of the Ceramic network. You can use it for now, but be aware that support will be limited as Ceramic is moving closer to a mainnet release.
